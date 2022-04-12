@@ -23,6 +23,7 @@ namespace MonCine.Vues
         {
             InitializeComponent();
             abonnes = dal.ReadAbonnes();
+            listAbonnes.ItemsSource = abonnes;
         }
     }
 }
