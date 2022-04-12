@@ -35,14 +35,14 @@ namespace MonCine.Vues
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            FProjections frmProjections = new FProjections();
+            FProjections frmProjections = new FProjections(dal);
 
             this.NavigationService.Navigate(frmProjections);
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            FFilms frmFilms = new FFilms();
+            FFilms frmFilms = new FFilms(dal);
 
             this.NavigationService.Navigate(frmFilms);
         }

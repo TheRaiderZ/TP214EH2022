@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MonCine.Data;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -17,9 +18,13 @@ namespace MonCine.Vues
     /// </summary>
     public partial class FFilms : Page
     {
-        public FFilms()
+        List<Film> films = new List<Film>();
+        public FFilms(DAL dal)
         {
             InitializeComponent();
+            //dal.AddFilms(new Film("Film Test", DateTime.UtcNow));
+            films = dal.ReadFilms();
+            listeFilms.ItemsSource = films;
         }
     }
 }

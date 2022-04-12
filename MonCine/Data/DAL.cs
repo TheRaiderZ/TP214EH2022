@@ -59,5 +59,38 @@ namespace MonCine.Data
             }
             return abonnes;
         }
+
+        public List<Film> ReadFilms()
+        {
+            var films = new List<Film>();
+
+            try
+            {
+                var collection = database.GetCollection<Film>("Films");
+                films = collection.Aggregate().ToList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Impossible d'obtenir la collection " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+            return films;
+        }
+
+        public void AddFilms(Film film)
+        {
+            
+
+            try
+            {
+                var collection = database.GetCollection<Film>("Films");
+                collection.InsertOne(film);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Impossible d'obtenir la collection " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+        }
     }
 }

@@ -7,6 +7,13 @@
         mc:Ignorable="d"
         Title="Films" Height="450" Width="800">
     <Grid>
-        
+        <ListView x:Name="listeFilms" d:ItemsSource="{d:SampleData ItemCount=5}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
     </Grid>
 </Page>

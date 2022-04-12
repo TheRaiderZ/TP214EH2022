@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MonCine.Data;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -17,7 +18,7 @@ namespace MonCine.Vues
     /// </summary>
     public partial class FProjections : Page
     {
-        public FProjections()
+        public FProjections(DAL dal)
         {
             InitializeComponent();
         }
