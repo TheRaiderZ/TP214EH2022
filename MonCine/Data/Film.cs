@@ -13,6 +13,7 @@ namespace MonCine.Data
         public DateTime DateProjection { get; set; }
         public bool SurAffiche { get; set; }
         public List<object> Acteurs { get; set; }
+        public object Realisateur { get; set; }
         public object Categories { get; set; }
         private List<int> Notes { get; set; }
         public int NbProjections { get; set; }

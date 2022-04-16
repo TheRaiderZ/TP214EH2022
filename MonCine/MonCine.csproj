@@ -9,6 +9,7 @@
   <ItemGroup>
     <None Remove="Ressources\Images\Logo.png" />
     <None Remove="Ressources\Images\sallecinema.jpg" />
+    <None Remove="Vues\Logo.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,8 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Ressources\Images\Logo.png" />
+    <Resource Include="Ressources\Images\Logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Ressources\Images\sallecinema.jpg" />
+    <Resource Include="Vues\Logo.png" />
   </ItemGroup>
 
 </Project>

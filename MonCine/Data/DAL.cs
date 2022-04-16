@@ -60,6 +60,7 @@ namespace MonCine.Data
             return abonnes;
         }
 
+        // CRUD Films
         public List<Film> ReadFilms()
         {
             var films = new List<Film>();
@@ -76,6 +77,23 @@ namespace MonCine.Data
             }
             return films;
         }
+        public Film FindFilmByName(string nom)
+        {
+            
+
+            try
+            {
+                var collection = database.GetCollection<Film>("Films");
+                var film = collection.Find(x=>x.Nom==nom).First();
+                return film;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Impossible d'obtenir la collection " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+            return null;
+        }
 
         public void AddFilms(Film film)
         {
@@ -88,9 +106,57 @@ namespace MonCine.Data
             }
             catch (Exception ex)
             {
+                MessageBox.Show("Impossible d'ajouter un film " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+        }
+
+        public void UpdateFilms(Film film)
+        {
+
+
+            try
+            {
+                var collection = database.GetCollection<Film>("Films");
+                collection.ReplaceOne((x=> x.Id==film.Id), film);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Impossible de modifier un film " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+        }
+
+        public void RemoveFilms(Film film)
+        {
+
+            try
+            {
+                var collection = database.GetCollection<Film>("Films");
+                collection.DeleteOne((x => x.Id == film.Id));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Impossible de supprimer un film " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+        }
+
+        public List<Film> ReadFilmsAffiche()
+        {
+            var films = new List<Film>();
+
+            try
+            {
+                var collection = database.GetCollection<Film>("Films");
+                films = collection.Find(x=>x.SurAffiche==true).ToList();
+            }
+            catch (Exception ex)
+            {
                 MessageBox.Show("Impossible d'obtenir la collection " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
 
             }
+            return films;
         }
     }
 }

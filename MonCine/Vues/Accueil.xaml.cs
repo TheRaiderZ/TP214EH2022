@@ -36,8 +36,9 @@ namespace MonCine.Vues
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             FProjections frmProjections = new FProjections(dal);
-
-            this.NavigationService.Navigate(frmProjections);
+            FilmItemTemplate filmItemTemplate = new FilmItemTemplate();
+            this.NavigationService.Navigate(filmItemTemplate);
+            //this.NavigationService.Navigate(frmProjections);
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
