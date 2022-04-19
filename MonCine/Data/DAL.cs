@@ -60,7 +60,7 @@ namespace MonCine.Data
             return abonnes;
         }
 
-        // CRUD Films
+        #region CRUD Films
         public List<Film> ReadFilms()
         {
             var films = new List<Film>();
@@ -77,6 +77,7 @@ namespace MonCine.Data
             }
             return films;
         }
+
         public Film FindFilmByName(string nom)
         {
             
@@ -95,7 +96,7 @@ namespace MonCine.Data
             return null;
         }
 
-        public void AddFilms(Film film)
+        public void AddFilm(Film film)
         {
             
 
@@ -111,7 +112,7 @@ namespace MonCine.Data
             }
         }
 
-        public void UpdateFilms(Film film)
+        public void UpdateFilm(Film film)
         {
 
 
@@ -127,7 +128,7 @@ namespace MonCine.Data
             }
         }
 
-        public void RemoveFilms(Film film)
+        public void RemoveFilm(Film film)
         {
 
             try
@@ -158,5 +159,131 @@ namespace MonCine.Data
             }
             return films;
         }
+
+        #endregion
+
+        #region CRUD Acteur
+        public List<Acteur> ReadActeurs()
+        {
+            var acteurs = new List<Acteur>();
+
+            try
+            {
+                var collection = database.GetCollection<Acteur>("Acteurs");
+                acteurs = collection.Aggregate().ToList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Impossible d'obtenir la collection " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+            return acteurs;
+        }
+        public void AddActeur(Acteur acteur)
+        {
+
+
+            try
+            {
+                var collection = database.GetCollection<Acteur>("Acteurs");
+                collection.InsertOne(acteur);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Impossible d'ajouter un acteur " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+        }
+
+        public void UpdateActeur(Acteur acteur)
+        {
+            try
+            {
+                var collection = database.GetCollection<Acteur>("Acteurs");
+                collection.ReplaceOne((x => x.Id == acteur.Id), acteur);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Impossible de modifier un acteur " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+        }
+
+        public void RemoveActeur(Acteur acteur)
+        {
+
+            try
+            {
+                var collection = database.GetCollection<Acteur>("Acteurs");
+                collection.DeleteOne((x => x.Id == acteur.Id));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Impossible de supprimer un acteur " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+        }
+        #endregion
+
+        #region CRUD Realisateur
+        public List<Realisateur> ReadRealisateurs()
+        {
+            var realisateurs = new List<Realisateur>();
+
+            try
+            {
+                var collection = database.GetCollection<Realisateur>("Realisateurs");
+                realisateurs = collection.Aggregate().ToList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Impossible d'obtenir la collection " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+            return realisateurs;
+        }
+
+        public void AddRealisateur(Realisateur realisateur)
+        {
+            try
+            {
+                var collection = database.GetCollection<Realisateur>("Realisateurs");
+                collection.InsertOne(realisateur);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Impossible d'ajouter un realisateur " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+        }
+
+        public void UpdateRealisateur(Realisateur realisateur)
+        {
+            try
+            {
+                var collection = database.GetCollection<Realisateur>("Realisateurs");
+                collection.ReplaceOne((x => x.Id == realisateur.Id), realisateur);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Impossible de modifier un realisateur " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+        }
+
+        public void RemoveRealisateur(Realisateur realisateur)
+        {
+            try
+            {
+                var collection = database.GetCollection<Realisateur>("Realisateurs");
+                collection.DeleteOne((x => x.Id == realisateur.Id));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Impossible de supprimer un realisateur " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+        }
+        #endregion
     }
 }

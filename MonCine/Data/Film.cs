@@ -12,12 +12,18 @@ namespace MonCine.Data
         public DateTime DateSortie { get; set; }
         public DateTime DateProjection { get; set; }
         public bool SurAffiche { get; set; }
-        public List<object> Acteurs { get; set; }
-        public object Realisateur { get; set; }
-        public object Categories { get; set; }
-        private List<int> Notes { get; set; }
+        public List<Acteur> Acteurs { get; set; }
+        public Realisateur Realisateur { get; set; }
+        public IEnumerable<Categorie> Categories { get; set; }
+        public List<int> Notes { get; set; }
         public int NbProjections { get; set; }
 
+        public string CategorieToString => CatToString();
+
+        public string CatToString()
+        {
+            return String.Join(',', this.Categories);
+        }
 
         public override string ToString()
         {
@@ -30,8 +36,6 @@ namespace MonCine.Data
             DateSortie = dateSortie;
         }
 
-
-        // A compléter
 
     }
 }

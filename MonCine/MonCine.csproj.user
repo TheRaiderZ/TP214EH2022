@@ -16,6 +16,9 @@
     <Compile Update="Vues\FFilms.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Vues\FilmItemTemplate.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Vues\FProjections.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -31,6 +34,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Vues\FFilms.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Vues\FilmItemTemplate.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Vues\FProjections.xaml">

@@ -8,16 +8,16 @@
         mc:Ignorable="d"
         Title="Films" Height="450" Width="800">
     <Page.Resources>
-
+        <local:CategoriesToStringConverter x:Key="Converter1"/>
         <DataTemplate x:Key="FilmItemTemplate">
 
-            <Grid Width="382" >
+            <Grid Width="401" >
                 <Label Content="{Binding Nom}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="95" Height="24" Margin="55,1,0,0"/>
                 <Label Content="{Binding DateSortie}" HorizontalAlignment="Left" Margin="55,25,0,0" VerticalAlignment="Top" Width="95" Height="26" FontSize="10"/>
                 <Image HorizontalAlignment="Left" Height="48" VerticalAlignment="Center" Width="48" Source="/Vues/Logo.png"/>
-                <Label Content="{Binding Categorie}" HorizontalAlignment="Left" Margin="183,1,0,0" VerticalAlignment="Top" Height="24" Width="103" FontSize="10"/>
+                <Label Content="{Binding Categories, Converter={StaticResource Converter1}}" HorizontalAlignment="Left" Margin="183,1,0,0" VerticalAlignment="Top" Height="24" Width="103" FontSize="10"/>
                 <Label Content="{Binding Realisateur}" HorizontalAlignment="Left" Margin="183,25,0,0" VerticalAlignment="Top" Height="26" Width="103" FontSize="10" FontWeight="Normal"/>
-                <CheckBox IsChecked="{Binding SurAffiche}"  Content="À l'affiche" HorizontalAlignment="Left" Margin="286,0,0,0" VerticalAlignment="Center" />
+                <CheckBox IsChecked="{Binding SurAffiche}"  Content="À l'affiche" HorizontalAlignment="Left" Margin="323,0,0,0" VerticalAlignment="Center" />
                 <Label Content="Cat. :" HorizontalAlignment="Left" Margin="148,1,0,0" VerticalAlignment="Top" Height="24" Width="35" FontSize="10" FontWeight="Bold"/>
                 <Label Content="Réal. :" HorizontalAlignment="Left" Margin="148,25,0,0" VerticalAlignment="Top" Height="26" Width="35" FontSize="10" FontWeight="Bold"/>
 
@@ -26,21 +26,25 @@
     </Page.Resources>
 
     <Grid Background="White">
-        <ListView SelectedItem="{Binding SelectedFilm}" ItemTemplate="{DynamicResource FilmItemTemplate}"  x:Name="listeFilms" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="45,60,365,40" SelectionChanged="listeFilms_SelectionChanged">
+        <ListView SelectedItem="{Binding SelectedFilm}" ItemTemplate="{DynamicResource FilmItemTemplate}"  x:Name="listeFilms" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="21,60,365,40" SelectionChanged="listeFilms_SelectionChanged" SelectionMode="Single">
 
         </ListView>
-        <Button x:Name="btnBack" Content="Retour" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="30" Width="104" Click="btnBack_Click"/>
-        <TextBox x:Name="txtRecherche" HorizontalAlignment="Left" Margin="564,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Height="30" TextChanged="TextBox_TextChanged"/>
-        <Label Content="Recherche :" HorizontalAlignment="Left" Margin="484,11,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <GroupBox Header="Infos du film" Margin="459,60,10,256">
+        <Button x:Name="btnBack" Content="Retour" HorizontalAlignment="Left" Margin="21,10,0,0" VerticalAlignment="Top" Height="30" Width="104" Click="btnBack_Click"/>
+        <TextBox x:Name="txtRecherche" HorizontalAlignment="Left" Margin="544,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="246" Height="30" TextChanged="TextBox_TextChanged"/>
+        <Label Content="Recherche :" HorizontalAlignment="Left" Margin="459,11,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <GroupBox Header="Infos du film" Margin="459,60,10,94">
             <Grid>
                 <Label Content="Nom :" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="25"/>
-                <CheckBox IsChecked="{Binding ElementName=listeFilms, Path=SelectedItem.SurAffiche}" x:Name="cbAffiche" Content="À l'affiche" HorizontalAlignment="Left" Margin="52,56,0,0" VerticalAlignment="Top"/>
-                <TextBox Text="{Binding ElementName=listeFilms, Path=SelectedItem.Nom}" x:Name="txtNom" HorizontalAlignment="Left" Margin="57,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="25"/>
+                <CheckBox IsChecked="{Binding ElementName=listeFilms, Path=SelectedItem.SurAffiche}" x:Name="cbAffiche" Content="À l'affiche" HorizontalAlignment="Left" Margin="218,16,0,0" VerticalAlignment="Top"/>
+                <TextBox Text="{Binding ElementName=listeFilms, Path=SelectedItem.Nom}" x:Name="txtNom" HorizontalAlignment="Left" Margin="57,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="146" Height="25"/>
+                <Label Content="Catégories :" HorizontalAlignment="Left" Margin="10,54,0,0" VerticalAlignment="Top" Height="25"/>
+                <Label Content="Réalisateur :" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" Height="25"/>
+                <ComboBox SelectedValuePath="Id" SelectedItem="{Binding ElementName=listeFilms, Path=SelectedItem.Realisateur}" x:Name="listeRealisateurs" HorizontalAlignment="Left" Margin="87,160,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
+                <ListBox  x:Name="listeCategories" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="87,59,29,133" SelectionMode="Multiple" SelectionChanged="listeCategories_SelectionChanged" local:ListBoxExtensions.SelectedItemList="{Binding ElementName=listeFilms, Path=SelectedItem.Categories}" />
             </Grid>
 
         </GroupBox>
-        <Button x:Name="btnSave" Content="Enregistrer les changements" HorizontalAlignment="Left" Margin="538,225,0,0" VerticalAlignment="Top" Height="40" Width="172" Click="btnSave_Click"/>
+        <Button x:Name="btnSave" Content="Enregistrer les changements" HorizontalAlignment="Left" Margin="538,370,0,0" VerticalAlignment="Top" Height="40" Width="172" Click="btnSave_Click"/>
 
     </Grid>
 </Page>
