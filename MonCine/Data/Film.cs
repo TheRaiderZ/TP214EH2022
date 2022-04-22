@@ -18,11 +18,18 @@ namespace MonCine.Data
         public List<int> Notes { get; set; }
         public int NbProjections { get; set; }
 
-        public string CategorieToString => CatToString();
+        public string CategorieToString => CategoryToString();
 
-        public string CatToString()
+        private string CategoryToString()
         {
             return String.Join(',', this.Categories);
+        }
+
+        public bool NomCorrespondFiltre(string filtre) {
+            string cleanedLowercaseFilter = filtre.Trim().ToLower();
+            string lowercaseName = Nom.ToLower();
+
+            return lowercaseName.Contains(cleanedLowercaseFilter); 
         }
 
         public override string ToString()

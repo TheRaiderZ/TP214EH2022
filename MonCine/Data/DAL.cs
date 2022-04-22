@@ -50,7 +50,10 @@ namespace MonCine.Data
             try
             {
                 var collection = database.GetCollection<Abonne>("Abonnes");
-                abonnes = collection.Aggregate().ToList();
+                if (collection != null)
+                {
+                    abonnes = collection.FindSync(Builders<Abonne>.Filter.Empty).ToList();
+                }
             }
             catch (Exception ex)
             {
@@ -68,7 +71,10 @@ namespace MonCine.Data
             try
             {
                 var collection = database.GetCollection<Film>("Films");
-                films = collection.Aggregate().ToList();
+                if (collection!=null)
+                {
+                    films = collection.FindSync(Builders<Film>.Filter.Empty).ToList(); 
+                }
             }
             catch (Exception ex)
             {
@@ -170,7 +176,11 @@ namespace MonCine.Data
             try
             {
                 var collection = database.GetCollection<Acteur>("Acteurs");
-                acteurs = collection.Aggregate().ToList();
+                //acteurs = collection.Aggregate().ToList();
+                if (collection != null)
+                {
+                    acteurs = collection.FindSync(Builders<Acteur>.Filter.Empty).ToList();
+                }
             }
             catch (Exception ex)
             {
@@ -181,8 +191,6 @@ namespace MonCine.Data
         }
         public void AddActeur(Acteur acteur)
         {
-
-
             try
             {
                 var collection = database.GetCollection<Acteur>("Acteurs");
@@ -233,7 +241,11 @@ namespace MonCine.Data
             try
             {
                 var collection = database.GetCollection<Realisateur>("Realisateurs");
-                realisateurs = collection.Aggregate().ToList();
+                if (collection != null)
+                {
+                    realisateurs = collection.FindSync(Builders<Realisateur>.Filter.Empty).ToList();
+                }
+
             }
             catch (Exception ex)
             {

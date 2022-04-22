@@ -1,4 +1,6 @@
-﻿using MonCine.Data;
+﻿// Marvin Laieb
+
+using MonCine.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,20 +26,31 @@ namespace MonCine.Vues
     {
         public List<Film> Films = new List<Film>();
         public List<Realisateur> Realisateurs = new List<Realisateur>();
+        public List<Acteur> Acteurs = new List<Acteur>();
         public Film SelectedFilm { get; set; }
         private DAL _dal;
         public FFilms(DAL dal)
         {
             InitializeComponent();
-            
             _dal = dal;
+            ReadEntities();
+            PopulateListViews();
+            
+        }
+
+        private void PopulateListViews()
+        {
+            listeFilms.ItemsSource = Films; listeFilms.DataContext = Films;
+            listeRealisateurs.ItemsSource = Realisateurs; listeRealisateurs.DataContext = Realisateurs;
+            listeActeurs.ItemsSource = Acteurs; listeRealisateurs.DataContext = Acteurs;
+            listeCategories.ItemsSource = Enum.GetValues(typeof(Categorie));
+        }
+
+        private void ReadEntities()
+        {
             Films = _dal.ReadFilms();
             Realisateurs = _dal.ReadRealisateurs();
-            listeFilms.ItemsSource = Films;
-            listeFilms.DataContext = Films;
-            listeRealisateurs.ItemsSource = Realisateurs;
-            listeRealisateurs.DataContext = Realisateurs;
-            listeCategories.ItemsSource = Enum.GetValues(typeof(Categorie));
+            Acteurs = _dal.ReadActeurs();
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -49,10 +62,11 @@ namespace MonCine.Vues
         {
             List<Film> resultat = new List<Film>();
 
-            resultat = films.Where(x => x.Nom.ToLower().Contains(filtre.ToLower())).ToList();
+            resultat = films.Where(x => x.NomCorrespondFiltre(filtre)).ToList();
             return resultat;
         }
 
+        //Barre de recherche
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             listeFilms.SelectedItem = null;
@@ -70,11 +84,9 @@ namespace MonCine.Vues
 
         private void listeFilms_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedFilm= (Film)listeFilms.SelectedItem;
-            if (SelectedFilm==null)
-            {
-                return;
-            }
+            SelectedFilm = (Film) listeFilms.SelectedItem;
+            if (SelectedFilm == null) { return; }
+
             listeRealisateurs.SelectedItem = SelectedFilm.Realisateur;
 
         }
@@ -100,32 +112,14 @@ namespace MonCine.Vues
             ((Film)listeFilms.SelectedItem).Categories = listeCategories.SelectedItems.Cast<Categorie>().ToList();
         }
 
-        
-    }
-
-    public class CategoriesToStringConverter : IValueConverter
-    {
-
-        #region IValueConverter Members
-
-        
-        public object Convert(object value, Type targetType,
-            object parameter, CultureInfo language)
+        private void listeActeurs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            List<Categorie> categories = (List<Categorie>)value;
-
-            return String.Join(',', categories);
+            if (SelectedFilm == null)
+            {
+                return;
+            }
+            ((Film)listeFilms.SelectedItem).Acteurs = listeActeurs.SelectedItems.Cast<Acteur>().ToList();
         }
-
-        // ConvertBack is not implemented for a OneWay binding.
-        public object ConvertBack(object value, Type targetType,
-            object parameter, CultureInfo language)
-        {
-            
-            throw new NotImplementedException();
-        }
-
-        #endregion
     }
 
     // Set ListBox SelectedItems based on another collection (https://stackoverflow.com/a/15540770) 

@@ -1,15 +1,158 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MonCine.Data;
 using MonCine.Vues;
+using MongoDB.Driver;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace MonCineTests
 {
+    
+    [TestClass]
+    public class DALtest
+    {
+        private Mock<IMongoClient> mongoClient;
+        private Mock<IMongoDatabase> mongodb;
+        private Mock<IMongoCollection<Film>> filmCollection;
+        private List<Film> filmList;
+        private Mock<IAsyncCursor<Film>> filmCursor;
+
+        public DALtest()
+        {
+            this.mongoClient = new Mock<IMongoClient>();
+            this.mongodb = new Mock<IMongoDatabase>();
+
+            this.filmCollection = new Mock<IMongoCollection<Film>>();
+            this.filmCursor = new Mock<IAsyncCursor<Film>>();
+
+
+            this.filmList = new List<Film>() {
+                new Film (
+                    "Film 1",
+                    DateTime.UtcNow
+                ),
+                new Film (
+                    "Film 2",
+                    DateTime.UtcNow
+                )
+            };
+        }
+
+        private void InitializeMongoDb()
+        {
+            this.mongodb.Setup(x => x.GetCollection<Film>("Films", default)).Returns(this.filmCollection.Object);
+
+            this.mongoClient.Setup(x => x.GetDatabase(It.IsAny<string>(), default)).Returns(this.mongodb.Object);
+        }
+
+        private void InitializeMongoFilmsCollection()
+        {
+            this.filmCursor.Setup(x => x.Current).Returns(this.filmList);
+
+            this.filmCursor.SetupSequence(x => x.MoveNext(It.IsAny<CancellationToken>())).Returns(true).Returns(false);
+
+
+            this.filmCollection
+                .Setup(
+                    x => x.FindSync(Builders<Film>.Filter.Empty, It.IsAny<FindOptions<Film>>(), default))
+                .Returns(filmCursor.Object);
+
+
+
+            this.InitializeMongoDb();
+        }
+
+        [TestMethod]
+        public void ReadAliments_moqFindSyncCall()
+        {
+            // Création des faux objets
+            this.InitializeMongoFilmsCollection();
+
+            var dal = new DAL(mongoClient.Object);
+
+            // Act : appel de la méthode qui contient le faux objet
+            var documents = dal.ReadFilms();
+
+            // Assert
+            CollectionAssert.AreEqual(filmList, documents);
+
+        }
+    }
+
     [TestClass]
     public class RealisateursTests
     {
+        private Mock<IMongoClient> mongoClient;
+        private Mock<IMongoDatabase> mongodb;
+        private Mock<IMongoCollection<Realisateur>> realisateurCollection;
+        private List<Realisateur> realisateurList;
+        private Mock<IAsyncCursor<Realisateur>> realisateurCursor;
+
+        public RealisateursTests()
+        {
+            this.mongoClient = new Mock<IMongoClient>();
+            this.mongodb = new Mock<IMongoDatabase>();
+
+            this.realisateurCollection = new Mock<IMongoCollection<Realisateur>>();
+            this.realisateurCursor = new Mock<IAsyncCursor<Realisateur>>();
+
+
+            this.realisateurList = new List<Realisateur>() {
+                new Realisateur (
+                    "Realisateur",
+                    "1",
+                    1
+                ),
+                new Realisateur (
+                    "Realisateur",
+                    "2",
+                    2
+                )
+            };
+        }
+
+        private void InitializeMongoDb()
+        {
+            this.mongodb.Setup(x => x.GetCollection<Realisateur>("Realisateurs", default)).Returns(this.realisateurCollection.Object);
+
+            this.mongoClient.Setup(x => x.GetDatabase(It.IsAny<string>(), default)).Returns(this.mongodb.Object);
+        }
+
+        private void InitializeMongoRealisateursCollection()
+        {
+            this.realisateurCursor.Setup(x => x.Current).Returns(this.realisateurList);
+
+            this.realisateurCursor.SetupSequence(x => x.MoveNext(It.IsAny<CancellationToken>())).Returns(true).Returns(false);
+
+
+            this.realisateurCollection
+                .Setup(
+                    x => x.FindSync(Builders<Realisateur>.Filter.Empty, It.IsAny<FindOptions<Realisateur>>(), default))
+                .Returns(realisateurCursor.Object);
+
+
+
+            this.InitializeMongoDb();
+        }
+
+        [TestMethod]
+        public void ReadRealisateurTest()
+        {
+            // Création des faux objets
+            this.InitializeMongoRealisateursCollection();
+
+            var dal = new DAL(mongoClient.Object);
+
+            // Act : appel de la méthode qui contient le faux objet
+            var documents = dal.ReadRealisateurs();
+
+            // Assert
+            CollectionAssert.AreEqual(realisateurList, documents);
+
+        }
+
         Realisateur realisateurTestUnitaire = new Realisateur("Bob", "PierreTest", 43);
 
         [TestMethod]
@@ -44,9 +187,9 @@ namespace MonCineTests
             foundRealisateur.Age = 55;
             dal.UpdateRealisateur(foundRealisateur);
 
-            var foundRealisateur2 = dal.ReadRealisateurs().Find(x => x.Nom == realisateurTestUnitaire.Nom);
+            var actualRealisateur = dal.ReadRealisateurs().Find(x => x.Nom == realisateurTestUnitaire.Nom);
 
-            Assert.AreEqual(55, foundRealisateur2.Age);
+            Assert.AreEqual(55, actualRealisateur.Age);
         }
         
         [TestMethod]
@@ -66,6 +209,73 @@ namespace MonCineTests
     [TestClass]
     public class ActeursTests
     {
+        private Mock<IMongoClient> mongoClient;
+        private Mock<IMongoDatabase> mongodb;
+        private Mock<IMongoCollection<Acteur>> acteurCollection;
+        private List<Acteur> acteurList;
+        private Mock<IAsyncCursor<Acteur>> acteurCursor;
+
+        public ActeursTests()
+        {
+            this.mongoClient = new Mock<IMongoClient>();
+            this.mongodb = new Mock<IMongoDatabase>();
+
+            this.acteurCollection = new Mock<IMongoCollection<Acteur>>();
+            this.acteurCursor = new Mock<IAsyncCursor<Acteur>>();
+
+
+            this.acteurList = new List<Acteur>() {
+                new Acteur (
+                    "Acteur",
+                    "1",
+                    1
+                ),
+                new Acteur (
+                    "Acteur",
+                    "2",
+                    2
+                )
+            };
+        }
+
+        private void InitializeMongoDb()
+        {
+            this.mongodb.Setup(x => x.GetCollection<Acteur>("Acteurs", default)).Returns(this.acteurCollection.Object);
+
+            this.mongoClient.Setup(x => x.GetDatabase(It.IsAny<string>(), default)).Returns(this.mongodb.Object);
+        }
+
+        private void InitializeMongoActeursCollection()
+        {
+            this.acteurCursor.Setup(x => x.Current).Returns(this.acteurList);
+
+            this.acteurCursor.SetupSequence(x => x.MoveNext(It.IsAny<CancellationToken>())).Returns(true).Returns(false);
+
+
+            this.acteurCollection
+                .Setup(
+                    x => x.FindSync(Builders<Acteur>.Filter.Empty, It.IsAny<FindOptions<Acteur>>(), default))
+                .Returns(acteurCursor.Object);
+
+            this.InitializeMongoDb();
+        }
+
+        [TestMethod]
+        public void ReadActeurTest()
+        {
+            // Création des faux objets
+            this.InitializeMongoActeursCollection();
+
+            var dal = new DAL(mongoClient.Object);
+
+            // Act : appel de la méthode qui contient le faux objet
+            var documents = dal.ReadActeurs();
+
+            // Assert
+            CollectionAssert.AreEqual(acteurList, documents);
+
+        }
+
         Acteur acteurTestUnitaire = new Acteur("Bob", "PierreTest", 43);
 
         [TestMethod]
@@ -82,7 +292,8 @@ namespace MonCineTests
         [TestMethod]
         public void ReadActeursNonNullTest()
         {
-            DAL dal = new DAL();
+            this.InitializeMongoActeursCollection();
+            DAL dal = new DAL(mongoClient.Object);
             List<Acteur> acteurs = new List<Acteur>();
 
             acteurs = dal.ReadActeurs();
@@ -94,22 +305,21 @@ namespace MonCineTests
         [TestMethod]
         public void ModifyActeurTest()
         {
+
             DAL dal = new DAL();
-            //Film film = new Film("Film TestUnitaire", DateTime.UtcNow);
             var foundActeur = dal.ReadActeurs().Find(x => x.Nom == acteurTestUnitaire.Nom);
             foundActeur.Age = 55;
             dal.UpdateActeur(foundActeur);
 
-            var foundActeur2 = dal.ReadActeurs().Find(x => x.Nom == acteurTestUnitaire.Nom);
+            var actualActeur = dal.ReadActeurs().Find(x => x.Nom == acteurTestUnitaire.Nom);
 
-            Assert.AreEqual(55, foundActeur2.Age);
+            Assert.AreEqual(55, actualActeur.Age);
         }
 
         [TestMethod]
         public void RemoveActeurTest()
         {
             DAL dal = new DAL();
-            //Film film = new Film("Film TestUnitaire", DateTime.UtcNow);
             Acteur acteur = dal.ReadActeurs().Find(x => x.Nom == acteurTestUnitaire.Nom);
             dal.RemoveActeur(acteur);
             var acteurs = dal.ReadActeurs();
@@ -122,6 +332,74 @@ namespace MonCineTests
     [TestClass]
     public class FilmsTests
     {
+        private Mock<IMongoClient> mongoClient;
+        private Mock<IMongoDatabase> mongodb;
+        private Mock<IMongoCollection<Film>> filmCollection;
+        private List<Film> filmList;
+        private Mock<IAsyncCursor<Film>> filmCursor;
+
+        public FilmsTests()
+        {
+            this.mongoClient = new Mock<IMongoClient>();
+            this.mongodb = new Mock<IMongoDatabase>();
+
+            this.filmCollection = new Mock<IMongoCollection<Film>>();
+            this.filmCursor = new Mock<IAsyncCursor<Film>>();
+
+
+            this.filmList = new List<Film>() {
+                new Film (
+                    "Film 1",
+                    DateTime.UtcNow
+                ),
+                new Film (
+                    "Film 2",
+                    DateTime.UtcNow
+                )
+            };
+        }
+
+        private void InitializeMongoDb()
+        {
+            this.mongodb.Setup(x => x.GetCollection<Film>("Films", default)).Returns(this.filmCollection.Object);
+
+            this.mongoClient.Setup(x => x.GetDatabase(It.IsAny<string>(), default)).Returns(this.mongodb.Object);
+        }
+
+        private void InitializeMongoFilmsCollection()
+        {
+            this.filmCursor.Setup(x => x.Current).Returns(this.filmList);
+
+            this.filmCursor.SetupSequence(x => x.MoveNext(It.IsAny<CancellationToken>())).Returns(true).Returns(false);
+
+
+            this.filmCollection
+                .Setup(
+                    x => x.FindSync(Builders<Film>.Filter.Empty, It.IsAny<FindOptions<Film>>(), default))
+                .Returns(filmCursor.Object);
+
+
+
+            this.InitializeMongoDb();
+        }
+
+        [TestMethod]
+        public void ReadFilmTest()
+        {
+            // Création des faux objets
+            this.InitializeMongoFilmsCollection();
+
+            var dal = new DAL(mongoClient.Object);
+
+            // Act : appel de la méthode qui contient le faux objet
+            var documents = dal.ReadFilms();
+
+            // Assert
+            CollectionAssert.AreEqual(filmList, documents);
+
+        }
+
+
         Film filmTestUnitaire = new Film("Film TestUnitaire", DateTime.UtcNow);
 
         [TestMethod]
@@ -152,7 +430,7 @@ namespace MonCineTests
         {
             DAL dal = new DAL();
 
-            Film result = dal.FindFilmByName("Film TestUnitaire");
+            Film result = dal.FindFilmByName(filmTestUnitaire.Nom);
 
             Assert.IsNotNull(result);
 
@@ -161,15 +439,12 @@ namespace MonCineTests
         public void ModifyFilmTest()
         {
             DAL dal = new DAL();
-            //Film film = new Film("Film TestUnitaire", DateTime.UtcNow);
-            var foundfilm = dal.ReadFilms().Find(x => x.Nom == filmTestUnitaire.Nom);
-            var real = dal.ReadRealisateurs()[0];
-            //foundfilm.Realisateur = new Realisateur("Bob","Bob1", 10);
-            foundfilm.Realisateur = real;
+            var foundfilm = dal.FindFilmByName(filmTestUnitaire.Nom);
+            foundfilm.Realisateur = new Realisateur("Bob", "Bob1", 10);
             dal.UpdateFilm(foundfilm);
-            var foundfilm2 = dal.ReadFilms().Find(x => x.Nom == filmTestUnitaire.Nom);
+            var actualFilm = dal.FindFilmByName(filmTestUnitaire.Nom);
 
-            Assert.AreEqual("Bob", foundfilm2.Realisateur.Prenom);
+            Assert.AreEqual("Bob", actualFilm.Realisateur.Prenom);
         }
         [TestMethod]
         public void ReadFilmAfficheTest()
@@ -185,13 +460,12 @@ namespace MonCineTests
         {
             DAL dal = new DAL();
             //Film film = new Film("Film TestUnitaire", DateTime.UtcNow);
-            Film film = dal.FindFilmByName("Film TestUnitaire");
+            Film film = dal.FindFilmByName(filmTestUnitaire.Nom);
             dal.RemoveFilm(film);
             var films = dal.ReadFilms();
             var result = films.Find(x => x.Id == film.Id);
             Assert.IsNull(result);
         }
-
         [TestMethod]
         public void RechercherFilmsParNom()
         {
@@ -213,9 +487,7 @@ namespace MonCineTests
                 item2,
             };
 
-
             List<Film> resultat = FFilms.FiltrerFilmsParNom(mockListefilms, "film");
-
 
             CollectionAssert.AreEquivalent(resultatAttendu, resultat);
             

@@ -30,5 +30,10 @@ namespace MonCine.Data
             return obj is Personne personne &&
                    Id.Equals(personne.Id);
         }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Prenom, Nom, Age, Id);
+        }
     }
 }
