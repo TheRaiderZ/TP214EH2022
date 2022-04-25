@@ -43,6 +43,8 @@ namespace MonCine.Data
             }
             return db;
         }
+
+        #region CRUD Abonne
         public List<Abonne> ReadAbonnes()
         {
             var abonnes = new List<Abonne>();
@@ -62,6 +64,71 @@ namespace MonCine.Data
             }
             return abonnes;
         }
+        public void AddRecompense( Abonne abonne)
+        {
+            try
+            {
+                var collection = database.GetCollection<Abonne>("Abonnes");
+                collection.ReplaceOne((x => x.Id == abonne.Id), abonne);
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("Impossible d'ajouter la récompense. " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        #endregion
+
+        #region CRUD Projection
+        public List<Projection> ReadProjections()
+        {
+            var projections = new List<Projection>();
+            try
+            {
+                var collection = database.GetCollection<Projection>("Projections");
+                if (collection != null)
+                {
+                    projections = collection.FindSync(Builders<Projection>.Filter.Empty).ToList();
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("Impossible d'obtenir la collection " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            return projections;
+        }
+        public void AddProjection(Projection projection)
+        {
+            try
+            {
+                var collection = database.GetCollection<Projection>("Projections");
+                collection.InsertOne(projection);
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("Impossible d'ajouter la récompense. " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+        }
+        public void UpdateProjection(Projection projection)
+        {
+            try
+            {
+                var collection = database.GetCollection<Projection>("Projections");
+                collection.ReplaceOne((x => x.Id == projection.Id), projection);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Impossible de modifier une projection " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+
+        }
+
+        #endregion
 
         #region CRUD Films
         public List<Film> ReadFilms()

@@ -19,11 +19,60 @@ namespace MonCine.Vues
     public partial class FAbonnes : Page
     {
         private List<Abonne> abonnes;
+        private List<Film> films;
+        public Abonne selectedAbonne { get; set; }
+        private DAL _dal;
         public FAbonnes(DAL dal)
         {
             InitializeComponent();
-            abonnes = dal.ReadAbonnes();
-            listAbonnes.ItemsSource = abonnes;
+            _dal = dal;
+            readListe();
+            fillLists();
         }
+
+        private void readListe()
+        {
+            abonnes = _dal.ReadAbonnes();
+            films = _dal.ReadFilms();
+        }
+
+        private void fillLists()
+        {
+            listAbonnes.ItemsSource = abonnes;
+            listeFilms.ItemsSource = films; listeFilms.DataContext = films;
+            listeType.ItemsSource = Enum.GetValues(typeof(TypeRecompense));
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            enregistrement();
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.GoBack();
+        }
+
+        private void listAbonnes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            selectedAbonne = (Abonne)listAbonnes.SelectedItem;
+            if (selectedAbonne == null) { return; }
+        }
+
+        private void enregistrement()
+        {
+            TypeRecompense type = (TypeRecompense)listeType.SelectedItem;
+            Film film = (Film)listeFilms.SelectedItem;
+            Recompense newRecompense = new Recompense( type, film);
+            selectedAbonne.recompenses.Add(newRecompense);
+            _dal.AddRecompense(selectedAbonne);
+
+        }
+
     }
 }

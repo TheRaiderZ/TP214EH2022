@@ -17,10 +17,15 @@
             <ColumnDefinition Width="9*"/>
             <ColumnDefinition Width="7*"/>
         </Grid.ColumnDefinitions>
-        <ListBox x:Name="listeFilms" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="186,10,36,340" Grid.Row="1"/>
-        <DatePicker Margin="187,65,27,305" Grid.Row="1" x:Name="dtpDateDebut"/>
-        <DatePicker Margin="187,110,27,259" Grid.Row="1" x:Name="dtpDateFin"/>
-        <ComboBox SelectedValuePath="Id"  x:Name="listeSalle" Margin="186,153,27,0" Grid.Row="1" Height="22" VerticalAlignment="Top"/>
+        <ListBox x:Name="listeFilms" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="186,10,36,303" Grid.Row="1"/>
+        <DatePicker Margin="189,122,25,235" Grid.Row="1" x:Name="dtpDateDebut"/>
+        <DatePicker Margin="189,180,25,180" Grid.Row="1" x:Name="dtpDateFin"/>
+        <ComboBox SelectedValuePath="Id"  x:Name="listeSalle" Margin="188,248,25,0" Grid.Row="1" Height="47" VerticalAlignment="Top"/>
+        <Label Content="Films :" HorizontalAlignment="Left" Margin="62,36,0,0" VerticalAlignment="Top" Foreground="White" Height="36" Grid.Row="1" Width="62"/>
+        <Label Content="Date de début :" HorizontalAlignment="Left" Margin="52,126,0,0" VerticalAlignment="Top" Foreground="White" Height="28" Grid.Row="1"/>
+        <Label Content="Date de fin :" HorizontalAlignment="Left" Margin="70,0,0,0" VerticalAlignment="Center" Foreground="White" Height="28" Grid.Row="1"/>
+        <Label Content="Salles :" HorizontalAlignment="Left" Margin="78,254,0,0" VerticalAlignment="Top" Foreground="White" Height="32" Grid.Row="1"/>
+
 
 
 
@@ -33,7 +38,7 @@
                 </Style>
             </Button.Resources>
         </Button>
-        <Button x:Name="btnSave" Content="Enregistrer projection" Margin="240,234,80,0" Click="btnSave_Click" MinWidth="104" BorderBrush="{x:Null}" BorderThickness="0,0,0,0" Height="30" VerticalAlignment="Top" Grid.Row="1">
+        <Button x:Name="btnSave" Content="Enregistrer projection" Margin="241,316,79,0" Click="btnSave_Click" MinWidth="104" BorderBrush="{x:Null}" BorderThickness="0,0,0,0" Height="30" VerticalAlignment="Top" Grid.Row="1">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="5"/>

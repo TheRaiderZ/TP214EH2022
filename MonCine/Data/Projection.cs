@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MongoDB.Bson;
+
 
 namespace MonCine.Data
 {
     public class Projection
     {
+        public ObjectId Id { get; set; }
         public Salle salle { get; set; }
         public DateTime dateDebut { get; set; }
         public DateTime dateFin { get; set; }

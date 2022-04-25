@@ -13,10 +13,10 @@
     <Compile Update="Vues\FAbonnes.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Vues\FFilms.xaml.cs">
+    <Compile Update="Vues\FCreerProjection.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Vues\FilmItemTemplate.xaml.cs">
+    <Compile Update="Vues\FFilms.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Vues\FProjections.xaml.cs">
@@ -33,10 +33,10 @@
     <Page Update="Vues\FAbonnes.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Vues\FFilms.xaml">
+    <Page Update="Vues\FCreerProjection.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Vues\FilmItemTemplate.xaml">
+    <Page Update="Vues\FFilms.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Vues\FProjections.xaml">
