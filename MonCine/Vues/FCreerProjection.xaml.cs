@@ -50,12 +50,19 @@ namespace MonCine.Vues
 
         private void EnregistrerProjection()
         {
-            Film film = (Film)listeFilms.SelectedItem;
-            DateTime debut = (DateTime)dtpDateDebut.SelectedDate;
-            DateTime fin = (DateTime)dtpDateFin.SelectedDate;
-            Projection projection = new Projection((Salle)listeSalle.SelectedItem,debut,fin,film);
-            _dal.AddProjection(projection);
-            this.NavigationService.GoBack();
+            if ((DateTime)dtpDateFin.SelectedDate < (DateTime)dtpDateDebut.SelectedDate)
+            {
+                MessageBox.Show("Vous ne pouvez pas mettre la date de fin de projection avant le début de la projection.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                Film film = (Film)listeFilms.SelectedItem;
+                DateTime debut = (DateTime)dtpDateDebut.SelectedDate;
+                DateTime fin = (DateTime)dtpDateFin.SelectedDate;
+                Projection projection = new Projection((Salle)listeSalle.SelectedItem,debut,fin,film);
+                _dal.AddProjection(projection);
+                this.NavigationService.GoBack();
+            }
         }
     }
 }

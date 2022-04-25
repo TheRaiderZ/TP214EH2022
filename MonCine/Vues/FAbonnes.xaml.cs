@@ -48,11 +48,6 @@ namespace MonCine.Vues
             enregistrement();
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.GoBack();

@@ -85,11 +85,6 @@ namespace MonCine.Vues
             this.NavigationService.GoBack();
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             Enregistrer();
@@ -97,6 +92,10 @@ namespace MonCine.Vues
 
         private void Enregistrer()
         {
+            if (SelectedProjection.dateDebut > SelectedProjection.dateFin)
+            {
+                MessageBox.Show("Vous ne pouvez pas mettre la date de fin de projection avant le début de la projection.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             _dal.UpdateProjection(SelectedProjection);
         }
 

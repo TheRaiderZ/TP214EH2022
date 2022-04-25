@@ -46,8 +46,6 @@
                 </Style>
             </Button.Resources>
         </Button>
-        <TextBox x:Name="txtRecherche" Margin="94,0,10,0" TextWrapping="Wrap" VerticalAlignment="Center" Height="30" TextChanged="TextBox_TextChanged" Grid.Column="1" Background="#FFE8EEF2" TextAlignment="Left" FontWeight="Normal" FontStyle="Normal"/>
-        <Label Content="Recherche :" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="14" Grid.Column="1" Foreground="White" FontWeight="Bold"/>
         <Border Margin="10,10,10,94" Grid.Column="1" Grid.Row="1" CornerRadius="10" Background="#FF042A2B">
             <GroupBox Header="Info Abonné" Background="#FF042A2B" Foreground="White" BorderThickness="0" Margin="0,0,0,-51">
                 <Grid>
