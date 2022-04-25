@@ -16,7 +16,7 @@ namespace MonCine.Data
         //public ObjectId Id { get; set; }
         public string Username { get; set; }
         public DateTime DateAdhesion { get; set; }
-        public List<Recompense> recompenses { get; set; }
+        public List<Recompense> Recompenses { get; set; }
 
 
 

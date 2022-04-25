@@ -18,10 +18,7 @@ namespace MonCine.Vues
     /// </summary>
     public partial class FProjections : Page
     {
-        public List<Film> Films = new List<Film>();
         public List<Projection> Projections = new List<Projection>();
-        public List<Projection> projectionsFilm = new List<Projection>();
-        public Film SelectedFilm { get; set; }
         public Projection SelectedProjection { get; set; }
         private DAL _dal;
 
@@ -29,19 +26,13 @@ namespace MonCine.Vues
         {
             InitializeComponent();
             _dal = dal;
-            readListe();
-            fillLists();
+            InitializeLists();
         }
 
-        private void readListe()
+        private void InitializeLists()
         {
-            Films = _dal.ReadFilms();
             Projections = _dal.ReadProjections();
-        }
-
-        private void fillLists()
-        {
-            listeFilms.ItemsSource = Films;
+            listeProjections.ItemsSource = Projections;
             listeSalle.ItemsSource = Enum.GetValues(typeof(Salle));
         }
 
@@ -52,32 +43,9 @@ namespace MonCine.Vues
             {
                 return;
             }
-            dtpDebut.SelectedDate = SelectedProjection.dateDebut;
-            dtpFin.SelectedDate = SelectedProjection.dateFin;
-            listeSalle.SelectedItem = SelectedProjection.salle;
-        }
-
-        private void listeFilms_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SelectedFilm = (Film)listeFilms.SelectedItem;
-            if (SelectedFilm == null)
-            {
-                return;
-            }
-            fillProjectionsList();
-        }
-
-        private void fillProjectionsList()
-        {
-            projectionsFilm.Clear();
-            foreach (var projection in Projections)
-            {
-                if (projection.film.Nom == SelectedFilm.Nom)
-                {
-                    projectionsFilm.Add(projection);
-                }
-            }
-            listeProjections.ItemsSource = projectionsFilm;
+            dtpDebut.SelectedDate = SelectedProjection.DateDebut;
+            dtpFin.SelectedDate = SelectedProjection.DateFin;
+            listeSalle.SelectedItem = SelectedProjection.Salle;
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -92,11 +60,18 @@ namespace MonCine.Vues
 
         private void Enregistrer()
         {
-            if (SelectedProjection.dateDebut > SelectedProjection.dateFin)
+            if (SelectedProjection.DateDebut == null || SelectedProjection.DateFin == null)
+            {
+                MessageBox.Show("Vous devez entrer les dates de début et de fin.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (SelectedProjection.DateDebut > SelectedProjection.DateFin)
             {
                 MessageBox.Show("Vous ne pouvez pas mettre la date de fin de projection avant le début de la projection.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            _dal.UpdateProjection(SelectedProjection);
+            else
+            {
+                _dal.UpdateProjection(SelectedProjection);
+            }
         }
 
         private void btnCreer_Click(object sender, RoutedEventArgs e)
@@ -112,7 +87,7 @@ namespace MonCine.Vues
             {
                 return;
             }
-            ((Projection)listeProjections.SelectedItem).salle = (Salle)listeSalle.SelectedItem;
+            ((Projection)listeProjections.SelectedItem).Salle = (Salle)listeSalle.SelectedItem;
         }
 
         private void dtpDebut_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -121,7 +96,7 @@ namespace MonCine.Vues
             {
                 return;
             }
-            ((Projection)listeProjections.SelectedItem).dateDebut = (DateTime)dtpDebut.SelectedDate;
+            ((Projection)listeProjections.SelectedItem).DateDebut = (DateTime)dtpDebut.SelectedDate;
         }
 
         private void dtpFin_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -130,7 +105,7 @@ namespace MonCine.Vues
             {
                 return;
             }
-            ((Projection)listeProjections.SelectedItem).dateFin = (DateTime)dtpFin.SelectedDate;
+            ((Projection)listeProjections.SelectedItem).DateFin = (DateTime)dtpFin.SelectedDate;
 
         }
     }

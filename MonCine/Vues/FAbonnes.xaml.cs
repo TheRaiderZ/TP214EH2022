@@ -18,9 +18,9 @@ namespace MonCine.Vues
     /// </summary>
     public partial class FAbonnes : Page
     {
-        private List<Abonne> abonnes;
-        private List<Film> films;
-        public Abonne selectedAbonne { get; set; }
+        private List<Abonne> Abonnes;
+        private List<Film> Films;
+        public Abonne SelectedAbonne { get; set; }
         private DAL _dal;
         public FAbonnes(DAL dal)
         {
@@ -32,14 +32,14 @@ namespace MonCine.Vues
 
         private void readListe()
         {
-            abonnes = _dal.ReadAbonnes();
-            films = _dal.ReadFilms();
+            Abonnes = _dal.ReadAbonnes();
+            Films = _dal.ReadFilms();
         }
 
         private void fillLists()
         {
-            listAbonnes.ItemsSource = abonnes;
-            listeFilms.ItemsSource = films; listeFilms.DataContext = films;
+            listAbonnes.ItemsSource = Abonnes;
+            listeFilms.ItemsSource = Films; listeFilms.DataContext = Films;
             listeType.ItemsSource = Enum.GetValues(typeof(TypeRecompense));
         }
 
@@ -55,8 +55,8 @@ namespace MonCine.Vues
 
         private void listAbonnes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedAbonne = (Abonne)listAbonnes.SelectedItem;
-            if (selectedAbonne == null) { return; }
+            SelectedAbonne = (Abonne)listAbonnes.SelectedItem;
+            if (SelectedAbonne == null) { return; }
         }
 
         private void enregistrement()
@@ -64,8 +64,8 @@ namespace MonCine.Vues
             TypeRecompense type = (TypeRecompense)listeType.SelectedItem;
             Film film = (Film)listeFilms.SelectedItem;
             Recompense newRecompense = new Recompense( type, film);
-            selectedAbonne.recompenses.Add(newRecompense);
-            _dal.AddRecompense(selectedAbonne);
+            SelectedAbonne.Recompenses.Add(newRecompense);
+            _dal.AddRecompense(SelectedAbonne);
 
         }
 

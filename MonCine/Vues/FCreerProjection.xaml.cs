@@ -21,9 +21,7 @@ namespace MonCine.Vues
     public partial class FCreerProjection : Page
     {
         public List<Film> Films = new List<Film>();
-
         private DAL _dal;
-
         public FCreerProjection(DAL dal)
         {
             InitializeComponent();
@@ -50,7 +48,11 @@ namespace MonCine.Vues
 
         private void EnregistrerProjection()
         {
-            if ((DateTime)dtpDateFin.SelectedDate < (DateTime)dtpDateDebut.SelectedDate)
+            if ((DateTime)dtpDateFin.SelectedDate == null || (DateTime)dtpDateDebut.SelectedDate == null)
+            {
+                MessageBox.Show("Vous devez entrer les dates de début et de fin.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if ((DateTime)dtpDateFin.SelectedDate < (DateTime)dtpDateDebut.SelectedDate)
             {
                 MessageBox.Show("Vous ne pouvez pas mettre la date de fin de projection avant le début de la projection.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
             }

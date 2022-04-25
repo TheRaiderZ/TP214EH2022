@@ -8,18 +8,18 @@ namespace MonCine.Data
 {
     public class Recompense
     {
-        public TypeRecompense type { get; set; }
-        public Film film { get; set; }
+        public TypeRecompense Type { get; set; }
+        public Film Film { get; set; }
 
         public Recompense(TypeRecompense type, Film film)
         {
-            this.type = type;
-            this.film = film;
+            this.Type = type;
+            this.Film = film;
         }
 
         public override string ToString()
         {
-            return type + " : " + film.Nom;
+            return Type + " : " + Film.Nom;
         }
     }
 }
